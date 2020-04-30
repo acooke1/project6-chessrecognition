@@ -1,9 +1,3 @@
-"""
-Project 4 - CNNs
-CS1430 - Computer Vision
-Brown University
-"""
-
 import tensorflow as tf
 import hyperparameters as hp
 from tensorflow.keras.layers import \
