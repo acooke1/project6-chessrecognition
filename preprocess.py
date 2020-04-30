@@ -72,16 +72,8 @@ class Datasets():
 
             data_sample[i] = img
 
-        # TODO: Calculate the pixel-wise mean and standard deviation
-        #       of the images in data_sample and store them in
-        #       self.mean and self.std respectively.
-        # ==========================================================
-
         self.mean = np.mean(data_sample, axis=(0,1,2))
         self.std = np.std(data_sample, axis=(0,1,2))
-        #print(self.mean.shape)
-
-        # ==========================================================
 
         print("Dataset mean: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
             self.mean[0], self.mean[1], self.mean[2]))
@@ -99,16 +91,10 @@ class Datasets():
             img - numpy array of shape (image size, image size, 3)
         """
 
-        # TODO: Standardize the input image. Use self.mean and self.std
-        #       that were calculated in calc_mean_and_std() to perform
-        #       the standardization.
-        # =============================================================
-
         img[:, :, 0] = (img[:, :, 0] - self.mean[0])/self.std[0]
         img[:, :, 1] = (img[:, :, 1] - self.mean[1])/self.std[1]
         img[:, :, 2] = (img[:, :, 2] - self.mean[2])/self.std[2]
 
-        # =============================================================
         return img
 
     def preprocess_fn(self, img):
@@ -129,17 +115,6 @@ class Datasets():
         else:
             img = img / 255.
             img = self.standardize(img)
-
-        # OPTIONAL:
-        # Write your own custom data augmentation procedure, creating
-        # an effect that cannot be achieved using the arguments of
-        # ImageDataGenerator. This can potentially boost your accuracy
-        # in the validation set. Note that this augmentation should
-        # only be applied to some input images, so make use of the
-        # 'random' module to make sure this happens. Also, make sure
-        # that ImageDataGenerator uses *this* function for preprocessing
-        # on augmented data.
-
 
         return img
 
@@ -162,23 +137,11 @@ class Datasets():
         """
 
         if augment:
-            # TODO: Use the arguments of ImageDataGenerator()
-            #       to augment the data. Leave the
-            #       preprocessing_function argument as is unless
-            #       you have written your own custom preprocessing
-            #       function (see custom_preprocess_fn()).
-            #
-            # Documentation for ImageDataGenerator: https://bit.ly/2wN2EmK
-            #
-            # ============================================================
-
-            
 
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
                 preprocessing_function=self.preprocess_fn, rotation_range=20, 
                 width_shift_range=0.2, height_shift_range=0.2, horizontal_flip=True)
 
-            # ============================================================
         else:
             # Don't modify this
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
