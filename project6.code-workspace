@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "project6-chessrecognition",
+			"path": "."
+		},
+		{
+			"name": "Chess ID Public Data",
+			"path": "../../../Downloads/Chess ID Public Data"
+		}
+	],
+	"settings": {}
+}
