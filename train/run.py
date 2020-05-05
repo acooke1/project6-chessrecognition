@@ -53,10 +53,6 @@ def train(model, datasets, checkpoint_path):
         ImageLabelingLogger(datasets)
     ]
 
-    # Include confusion logger in callbacks if flag set
-    if ARGS.confusion:
-        callback_list.append(ConfusionMatrixLogger(datasets))
-
     # Begin training
     model.fit(
         x=datasets.train_data,
@@ -80,7 +76,6 @@ def main():
     """ Main function. """
 
     datasets = Datasets(ARGS.data, 1)
-
     model = YourModel()
     model(tf.keras.Input(shape=(hp.img_size, hp.img_size, 3)))
     checkpoint_path = "./your_model_checkpoints/"
@@ -102,6 +97,9 @@ def main():
         test(model, datasets.test_data)
     else:
         train(model, datasets, checkpoint_path)
+
+    # Save Model
+    model.save('saved_model') 
 
 # Make arguments global
 ARGS = parse_args()
