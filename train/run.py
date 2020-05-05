@@ -19,11 +19,6 @@ def parse_args():
         default=os.getcwd() + '/data/',
         help='Location where the dataset is stored.')
     parser.add_argument(
-        '--load-vgg',
-        default=os.getcwd() + '/vgg16_imagenet.h5',
-        help='''Path to pre-trained VGG-16 file (only applicable to
-        task 2).''')
-    parser.add_argument(
         '--load-checkpoint',
         default=None,
         help='''Path to model checkpoint file (should end with the
@@ -33,18 +28,11 @@ def parse_args():
         the case of task 2, passing a checkpoint path will disable
         the loading of VGG weights.''')
     parser.add_argument(
-        '--confusion',
-        action='store_true',
-        help='''Log a confusion matrix at the end of each
-        epoch (viewable in Tensorboard). This is turned off
-        by default as it takes a little bit of time to complete.''')
-    parser.add_argument(
         '--evaluate',
         action='store_true',
         help='''Skips training and evaluates on the test set once.
         You can use this to test an already trained model by loading
         its checkpoint.''')
-
     return parser.parse_args()
 
 def train(model, datasets, checkpoint_path):
