@@ -25,6 +25,24 @@ def findintersect(vertical, horizontal, img):
             img = cv2.circle(img, (x, y), 3, [255, 0, 0], 2)
             
     return img, x_corners, y_corners
+
+def approxMode(vals, r=3):
+    """Takes a list of values and finds the mode where numbers
+    only need to be close to eachother"""
+    vals = np.sort(vals)
+
+    max_bin = [vals[0]]
+    current_bin = [vals[0]]
+    for i in range(1, len(vals)):
+        if abs(vals[i] - np.mean(current_bin)) < r:
+            current_bin.append(vals[i])
+            if len(current_bin) >= len(max_bin):
+                max_bin = current_bin[:]
+        else: 
+            current_bin = [vals[i]]
+
+
+    return np.mean(max_bin)
           
 def nineLines(points, width, use_mode=False):
     """Takes a list of points and finds 9 equidistant points
@@ -37,6 +55,7 @@ def nineLines(points, width, use_mode=False):
     def fill(pts):
         """Checks if 2 points are different by a multiple of 
         the median"""
+        
         pts = np.sort(pts)
         diff = np.diff(pts)
         
@@ -45,7 +64,7 @@ def nineLines(points, width, use_mode=False):
         diff2 = np.diff(pts2)
 
         if use_mode:
-            med = mode(diff2).mode
+            med = approxMode(diff2)
         else:
             med = np.median(diff2)
         
@@ -58,7 +77,7 @@ def nineLines(points, width, use_mode=False):
         if gaps.shape[0] == 0:
             return pts
         else:
-            new_pt = np.round(pts2[gaps[0]] + med)
+            new_pt = np.round(pts2[gaps] + med)
             return np.append(pts, new_pt)
 
     def trim(pts):
@@ -67,6 +86,7 @@ def nineLines(points, width, use_mode=False):
         
         This assumes that a correct line is not surrounded by 
         2 incorrect lines, otherwise it will be incorrectly removed"""
+        
         pts = np.sort(pts)
         diff = np.diff(pts)
         
@@ -75,7 +95,7 @@ def nineLines(points, width, use_mode=False):
         diff2 = np.diff(pts2)
 
         if use_mode:
-            med = mode(diff2).mode
+            med = approxMode(diff2)
         else:
             med = np.median(diff2)
 
@@ -121,6 +141,7 @@ def nineLines(points, width, use_mode=False):
         """Adds an edge to the min or max, whichever
         is closer to the boundary. This is a fairly
         naive approach that we may need to update later"""
+        
         pts = np.sort(pts)
         diff = np.diff(pts)
         med = np.median(diff)
@@ -141,9 +162,11 @@ def nineLines(points, width, use_mode=False):
         return np.sort(points)
     elif points.shape[0] > 9:
         if use_mode:
+            #return np.sort(points)[:9]
             raise ValueError("Too many lines")
         else:
             # Try again with mode
+            print("mode")
             return nineLines(points, width, True)
     else:
         return addEdges(points)
@@ -153,47 +176,41 @@ def preProcessLines(lines, img):
     """Takes all veritcal and horizontal lines and returns 9 of
     each, evenly spaced, to outline our chessboard"""
     
-    # wrapping numbers to [-pi,pi] interval for comparison
-    v_wrapped = (lines[:,1] - np.pi/2) % np.pi - np.pi/2
-    h_wrapped = lines[:,1] % np.pi - np.pi/2
     THRESH = 0.05
 
-    vertical = lines[np.abs(v_wrapped) < THRESH][:,0]
-    horizontal = lines[np.abs(h_wrapped) < THRESH][:,0]
-    
-    if lines.shape[0] != horizontal.shape[0] + vertical.shape[0]:
-        print("\nsome lines removed in preProcess; please investigate\n")
-    
+    vertical = lines[np.abs(lines[:,1]) < THRESH][:,0]
+    vertical2 = -1 * lines[np.abs(lines[:,1] - np.pi) < THRESH][:,0]
+    vertical = np.append(vertical, vertical2)
+
+    horizontal = lines[np.abs(lines[:,1] - np.pi/2) < THRESH][:,0]
+
     vertical = nineLines(vertical, img.shape[1])
     horizontal = nineLines(horizontal, img.shape[0])
 
-    # vertical = vertical.reshape(-1,1)
-    # horizontal = horizontal.reshape(-1,1)
-
-    # vertical = np.append(vertical, np.zeros(vertical.shape), axis=1)
-    # horizontal = np.append(horizontal, np.zeros(horizontal.shape) + np.pi/2, axis=1)
-    # new_lines = np.append(vertical, horizontal, axis=0)
-
     return vertical, horizontal
+
 
 def findlines(board): 
     img = cv2.imread(board, 0)
     
+    # Images that are too big yield far too many lines
+    if img.shape[0] * img.shape[1] > 300000:
+        # Keep width and height proportional
+        new_height = int(np.round(512 * img.shape[0]/img.shape[1]))
+        img = cv2.resize(img, (512, new_height))
+    
+
     blur_gray = cv2.GaussianBlur(img,(5, 5),0)
-    #a, osuimg = cv2.threshold(blur_gray, 127, 255, cv2.THRESH_BINARY)
     edges = cv2.Canny(blur_gray, 60, 110)
     lines = cv2.HoughLines(edges, 1, np.pi/180, 135)
     lines = lines.reshape((lines.shape[0], lines.shape[2]))
     print(lines.shape)
-
+    
     vertical, horizontal = preProcessLines(lines, img)
 
     x_corners = np.repeat(horizontal.reshape(1,9), 9, axis=0)
     y_corners = np.repeat(vertical.reshape(9,1), 9, axis=1)
 
-    #corners = findintersect(vertical, horizontal, img)
-    
-    #cv2.imshow('corners', corners)
     
     for i in range(8):
         for j in range(8):
@@ -237,7 +254,11 @@ def findlines(board):
     #plt.imshow(img)
 
 def main():
-    findlines('chessb6.png')
+    #findlines("data/chessb6.png")
+    findlines('data/images/0001.jpg')
+    findlines('data/images/0002.jpg')
+    findlines('data/images/0003.jpg')
+    findlines('data/images/0004.jpg')
 
 if __name__ == "__main__":
     main()
