@@ -9,7 +9,7 @@ Brown University
 img_size = 224
 
 # The number of image scene classes. Don't change this.
-category_num = 15
+category_num = 13
 
 # Sample size for calculating the mean and standard deviation of the
 # training data. This many images will be randomly seleted to be read
@@ -25,12 +25,13 @@ num_epochs = 30
 
 # batch_size defines the number of training examples per batch:
 # You don't need to modify this.
-batch_size = 10
+batch_size = 100
 
 # learning_rate is a critical parameter that can dramatically affect
 # whether training succeeds or fails. For most of the experiments in this
 # project the default learning rate is safe.
-learning_rate = 1e-4
+learning_rate = 1e-3
+#learning_rate = 1e-4
 
 # Momentum on the gradient (if you use a momentum-based optimizer)
 momentum = 0.01

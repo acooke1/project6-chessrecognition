@@ -16,7 +16,7 @@ class YourModel(tf.keras.Model):
 
         
         self.architecture = [
-         # Block 1
+        # Block 1
         Conv2D(64, 3, 1, padding="same", activation="relu", name="block1_conv1"),
         Conv2D(64, 3, 1, padding="same", activation="relu", name="block1_conv2"),
         MaxPool2D(2, name="block1_pool"),
@@ -39,7 +39,6 @@ class YourModel(tf.keras.Model):
         Conv2D(512, 3, 1, padding="same", activation="relu", name="block5_conv2"),
         Conv2D(512, 3, 1, padding="same", activation="relu", name="block5_conv3"),
         MaxPool2D(2, name="block5_pool"),
-            
         Dropout(0.3),
         Flatten(),
         Dense(13,activation='softmax')
