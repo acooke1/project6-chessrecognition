@@ -1,7 +1,6 @@
 import os
 import argparse
 import tensorflow as tf
-from vgg_model import VGGModel
 from your_model import YourModel
 import hyperparameters as hp
 from preprocess import Datasets
