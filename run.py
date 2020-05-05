@@ -15,12 +15,6 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Let's train some neural nets!")
     parser.add_argument(
-        '--task',
-        required=True,
-        choices=['1', '2'],
-        help='''Which task of the assignment to run -
-        training from scratch (1), or fine tuning VGG-16 (2).''')
-    parser.add_argument(
         '--data',
         default=os.getcwd() + '/data/',
         help='Location where the dataset is stored.')
@@ -97,22 +91,12 @@ def test(model, test_data):
 def main():
     """ Main function. """
 
-    datasets = Datasets(ARGS.data, ARGS.task)
+    datasets = Datasets(ARGS.data, 1)
 
-    if ARGS.task == '1':
-        model = YourModel()
-        model(tf.keras.Input(shape=(hp.img_size, hp.img_size, 3)))
-        checkpoint_path = "./your_model_checkpoints/"
-        model.summary()
-    else:
-        model = VGGModel()
-        checkpoint_path = "./vgg_model_checkpoints/"
-        model(tf.keras.Input(shape=(224, 224, 3)))
-        model.summary()
-
-        # Don't load pretrained vgg if loading checkpoint
-        if ARGS.load_checkpoint is None:
-            model.load_weights(ARGS.load_vgg, by_name=True)
+    model = YourModel()
+    model(tf.keras.Input(shape=(hp.img_size, hp.img_size, 3)))
+    checkpoint_path = "./your_model_checkpoints/"
+    model.summary()
 
     if ARGS.load_checkpoint is not None:
         model.load_weights(ARGS.load_checkpoint)
