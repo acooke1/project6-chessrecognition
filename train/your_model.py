@@ -32,16 +32,17 @@ class YourModel(tf.keras.Model):
         # ]
 
         self.architecture = [
-            Conv2D(32,3,strides=1,activation='relu'),
-            Conv2D(32,3,strides=1,activation='relu'),
+            Conv2D(16,3,strides=1,activation='relu'),
+            Conv2D(16,3,strides=1,activation='relu'),
             MaxPool2D(pool_size=2, strides=2),
 
-            Conv2D(64,7,strides=1,activation='relu'),
-            Conv2D(64,7,strides=1,activation='relu'),
+            Conv2D(32,7,strides=1,activation='relu'),
+            Conv2D(32,7,strides=1,activation='relu'),
             MaxPool2D(pool_size=2,strides=2),
             
             Dropout(0.5),
             Flatten(),
+            Dense(26,activation='relu'),
             Dense(13,activation='softmax')
         ]
 
