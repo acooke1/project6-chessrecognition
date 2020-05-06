@@ -263,9 +263,6 @@ def findlines(board, showImage):
     #plt.imshow(img)
     return np.asarray(chessSquares)
 
-def evaluate_square(model, img):
-    model.evaluate(x=img)
-
 def main():
     path = input("image:\n")
     if path == 'image1':
@@ -279,8 +276,6 @@ def main():
 
 
     imgs = findlines(path, False)
-
-    datasets = Dataset()
 
     #findlines('train/data/images/0002.jpg')
     #findlines('train/data/images/0003.jpg')
