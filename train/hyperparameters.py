@@ -21,7 +21,7 @@ preprocess_sample_size = 400
 # num_epochs is the number of epochs. If you experiment with more
 # complex networks you might need to increase this. Likewise if you add
 # regularization that slows training.
-num_epochs = 10
+num_epochs = 20
 
 # batch_size defines the number of training examples per batch:
 # You don't need to modify this.
