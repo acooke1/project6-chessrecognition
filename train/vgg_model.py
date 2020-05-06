@@ -52,7 +52,7 @@ class VGGModel(tf.keras.Model):
 
         self.head = [
             Flatten(),
-            Dense(64,activation='relu'),
+            Dense(32,activation='relu'),
             Dense(15,activation='softmax')
         ]
 

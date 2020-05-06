@@ -13,24 +13,6 @@ class YourModel(tf.keras.Model):
             learning_rate=hp.learning_rate,
             momentum=hp.momentum)
 
-        # self.architecture = [
-        #     Conv2D(32,3,strides=1,activation='relu'),
-        #     Conv2D(32,3,strides=1,activation='relu'),
-        #     MaxPool2D(pool_size=2, strides=2),
-
-        #     Conv2D(64,3,strides=1,activation='relu'),
-        #     Conv2D(64,3,strides=1,activation='relu'),
-        #     MaxPool2D(pool_size=2,strides=2),
-
-        #     Conv2D(128,3,strides=1,activation='relu'),
-        #     Conv2D(128,3,strides=1,activation='relu'),
-        #     MaxPool2D(pool_size=2,strides=2),
-            
-        #     Dropout(0.5),
-        #     Flatten(),
-        #     Dense(13,activation='softmax')
-        # ]
-
         self.architecture = [
             Conv2D(16,3,strides=1,activation='relu'),
             Conv2D(16,3,strides=1,activation='relu'),
