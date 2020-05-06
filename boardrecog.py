@@ -2,6 +2,8 @@ from cv2 import cv2
 import numpy as np 
 from matplotlib import pyplot as plt
 from scipy.stats import mode
+import tensorflow as tf
+from preprocess import Datasets
 
 def findintersect(vertical, horizontal, img):    
     
@@ -190,7 +192,7 @@ def preProcessLines(lines, img):
     return vertical, horizontal
 
 
-def findlines(board): 
+def findlines(board, showImage): 
     img = cv2.imread(board, 0)
     
     # Images that are too big yield far too many lines
@@ -222,6 +224,8 @@ def findlines(board):
             else:
                 color = (255,0,0)
             cv2.rectangle(img, start, end, color,2)
+    x_corners = x_corners.astype(int)
+    y_corners = y_corners.astype(int)
 
     # for line in lines:
     #     #for rho,theta in line:
@@ -247,18 +251,49 @@ def findlines(board):
     
     #cv2.imshow('blur_gray', blur_gray)
     #cv2.imshow('image', edges)
-    cv2.imshow('hough', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if showImage:
+        cv2.imshow('hough', img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+    chessSquares = []
+    for i in range(8):
+        for j in range(8):
+            chessSquares.append(img[y_corners[i,j]:y_corners[i+1,j], x_corners[i,j]:x_corners[i,j+1]])
     #cv2.waitKey(1)
     #plt.imshow(img)
+    return np.asarray(chessSquares)
+
+def evaluate_square(model, img):
+    model.evaluate(x=img)
 
 def main():
-    #findlines("data/chessb6.png")
-    findlines('data/images/0001.jpg')
-    findlines('data/images/0002.jpg')
-    findlines('data/images/0003.jpg')
-    findlines('data/images/0004.jpg')
+    path = input("image:\n")
+    if path == 'image1':
+        path = 'train/data/images/0001.jpg'
+    elif path == 'image2':
+        path = 'train/data/images/0002.jpg'
+    elif path == 'image3':
+        path = 'train/data/images/0003.jpg'
+    else:
+        path = 'train/data/images/0004.jpg'
+
+
+    imgs = findlines(path, False)
+
+    datasets = Dataset()
+
+    #findlines('train/data/images/0002.jpg')
+    #findlines('train/data/images/0003.jpg')
+    #findlines('train/data/images/0004.jpg')
+
+    new_model = tf.keras.models.load_model('train/my_model', compile=False)
+    loss, acc = new_model.evaluate(test_images,  test_labels, verbose=2)
+    predictions = np.amax(new_model.predict(imgs), axis=1)
+    print(predictions)
+
+
+        
+    
 
 if __name__ == "__main__":
     main()
