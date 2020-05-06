@@ -42,7 +42,7 @@ class YourModel(tf.keras.Model):
             
             Dropout(0.5),
             Flatten(),
-            Dense(26,activation='softmax'),
+            Dense(13,activation='softmax'),
             Dense(13,activation='softmax')
         ]
 
