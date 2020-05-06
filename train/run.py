@@ -131,6 +131,8 @@ def main():
     else:
         train(model, datasets, checkpoint_path)
 
+    model.save('my_model') 
+
 # Make arguments global
 ARGS = parse_args()
 
