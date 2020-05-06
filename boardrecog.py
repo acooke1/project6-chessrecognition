@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.stats import mode
 import tensorflow as tf
+import stockfish as sf
 
 def findintersect(vertical, horizontal, img):    
     
@@ -193,7 +194,8 @@ def preProcessLines(lines, img):
 
 def findlines(board, showImage): 
     img = cv2.imread(board, 0)
-    
+
+
     # Images that are too big yield far too many lines
     if img.shape[0] * img.shape[1] > 300000:
         # Keep width and height proportional
@@ -281,7 +283,8 @@ def main():
     #findlines('train/data/images/0004.jpg')
 
     new_model = tf.keras.models.load_model('train/my_model', compile=True)
-    #loss, acc = new_model.evaluate(test_images,  test_labels, verbose=2)
+    new_model.summary()
+    #loss, acc = new_model.evaluate(test_data, , verbose=2)
     predictions = np.amax(new_model.predict(imgs), axis=1)
     print(predictions)
 
