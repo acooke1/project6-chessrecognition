@@ -22,7 +22,7 @@ def parse_args():
         training from scratch (1), or fine tuning VGG-16 (2).''')
     parser.add_argument(
         '--data',
-        default=os.getcwd() + '/../data/',
+        default=os.getcwd() + '/data/',
         help='Location where the dataset is stored.')
     parser.add_argument(
         '--load-vgg',
