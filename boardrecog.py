@@ -3,7 +3,6 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.stats import mode
 import tensorflow as tf
-from preprocess import Datasets
 
 def findintersect(vertical, horizontal, img):    
     
@@ -281,8 +280,8 @@ def main():
     #findlines('train/data/images/0003.jpg')
     #findlines('train/data/images/0004.jpg')
 
-    new_model = tf.keras.models.load_model('train/my_model', compile=False)
-    loss, acc = new_model.evaluate(test_images,  test_labels, verbose=2)
+    new_model = tf.keras.models.load_model('train/my_model', compile=True)
+    #loss, acc = new_model.evaluate(test_images,  test_labels, verbose=2)
     predictions = np.amax(new_model.predict(imgs), axis=1)
     print(predictions)
 
