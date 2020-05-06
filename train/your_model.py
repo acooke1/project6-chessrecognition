@@ -36,12 +36,13 @@ class YourModel(tf.keras.Model):
             Conv2D(32,3,strides=1,activation='relu'),
             MaxPool2D(pool_size=2, strides=2),
 
-            Conv2D(64,3,strides=1,activation='relu'),
-            Conv2D(64,3,strides=1,activation='relu'),
+            Conv2D(64,7,strides=1,activation='relu'),
+            Conv2D(64,7,strides=1,activation='relu'),
             MaxPool2D(pool_size=2,strides=2),
             
             Dropout(0.5),
             Flatten(),
+            Dense(26,activation='softmax'),
             Dense(13,activation='softmax')
         ]
 
