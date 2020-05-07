@@ -282,8 +282,11 @@ def main():
     #findlines('train/data/images/0003.jpg')
     #findlines('train/data/images/0004.jpg')
 
-    new_model = tf.keras.models.load_model('train/my_model', compile=True)
-    new_model.summary()
+    def custom_loss(y_true, y_pred):
+        return keras.backend.mean(keras.backend.square(y_true - y_pred), axis=-1)
+
+    new_model = tf.keras.models.load_model('train/my_model', compile=False)
+    new_model.compile(loss=custom_loss, optimizer=keras.optimizers.RMSprop())
     #loss, acc = new_model.evaluate(test_data, , verbose=2)
     predictions = np.amax(new_model.predict(imgs), axis=1)
     print(predictions)
