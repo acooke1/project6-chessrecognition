@@ -5,6 +5,7 @@ from scipy.stats import mode
 import tensorflow as tf
 import stockfish as sf
 
+
 def findintersect(vertical, horizontal, img):    
     
     for i in range(9):
@@ -283,12 +284,24 @@ def main():
     #findlines('train/data/images/0004.jpg')
 
     def custom_loss(y_true, y_pred):
-        return keras.backend.mean(keras.backend.square(y_true - y_pred), axis=-1)
+        return tf.keras.backend.mean(tf.keras.backend.square(y_true - y_pred), axis=-1)
 
     new_model = tf.keras.models.load_model('train/my_model', compile=False)
-    new_model.compile(loss=custom_loss, optimizer=keras.optimizers.RMSprop())
+    new_model.compile(loss=custom_loss, optimizer=tf.keras.optimizers.RMSprop())
     #loss, acc = new_model.evaluate(test_data, , verbose=2)
-    predictions = np.amax(new_model.predict(imgs), axis=1)
+    
+    predictions = []
+    print(imgs[1].shape)
+    print(imgs[1])
+    for i in range(imgs.shape[0]):
+        s = np.resize(imgs[i], (224, 224))/255.0
+        square = tf.convert_to_tensor(np.stack((s,s,s), axis=-1), np.float32)
+        #square = imgs[i]/255.0
+        print(square.shape)
+        p = new_model.predict(square)
+        predictions.append(p)
+    #imgs = tf.convert_to_tensor(imgs, np.float32)
+    predictions = new_model.predict(imgs)
     print(predictions)
 
 
