@@ -192,7 +192,6 @@ def preProcessLines(lines, img):
 
     return vertical, horizontal
 
-
 def findlines(board, showImage): 
     img = cv2.imread(board, 0)
 
