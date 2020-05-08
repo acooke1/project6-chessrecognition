@@ -292,16 +292,41 @@ def main():
     predictions = []
     print(imgs[1].shape)
     print(imgs[1])
+    board = ""
+    empties = 0
+    rankCntr = 0
+    cases = ["b", "k", "n", "p", "q", "r", "E", "B", "K", "N", "P", "Q", "R"]
     for i in range(imgs.shape[0]):
         s = np.resize(imgs[i], (224, 224))/255.0
         square = tf.convert_to_tensor(np.stack((s,s,s), axis=-1), np.float32)
-        #square = imgs[i]/255.0
         print(square.shape)
-        p = new_model.predict(square)
-        predictions.append(p)
+        p = np.argmax(new_model.predict(square))[0]
+        if cases[p] == "E":
+            empties += 1
+        else: 
+            if empties == 0:
+                board += cases[p]
+            else:
+                board += str(empties)
+                board += cases[p]
+        rankCntr += 1
+        if rankCntr == 8:
+            if empties != 0:
+                board += str(empties)
+            board += "/"
+            rankCntr = 0
+
+    boardWhite = board + " w KQkq - 0 2"
+    boardBlack = board + " b KQkq - 0 2"
+    API = sf.Stockfish()
+    API.set_fen_position(boardWhite)
+    print("Best move for white: " + API.get_best_move())
+    API.set_fen_position(boardBlack)
+    print("\nBest move for black: " + API.get_best_move())
+
     #imgs = tf.convert_to_tensor(imgs, np.float32)
-    predictions = new_model.predict(imgs)
-    print(predictions)
+    #predictions = new_model.predict(imgs)
+    #print(predictions)
 
 
         
