@@ -16,22 +16,27 @@ def main():
         path = 'train/data/images/0002.jpg'
     elif path == 'image3':
         path = 'train/data/images/0003.jpg'
-    else:
+    elif path == 'image4':
         path = 'train/data/images/0004.jpg'
+    elif path == 'image7':
+        path = 'train/data/images/0007.jpg'
+    else:
+        path = 'train/data/images/0008.jpg'
 
     (x_corners, y_corners) = findlines(path, False)
-    img2 = Image.open(path)
-    print(img2)
+    #img2 = Image.open(path)
+    #print(img2)
     img = cv2.imread(path)
-    print(img.shape)
+    #print(img.shape)
 
     chessSquares = []
     #plt.imshow(img)
     #plt.show()
     for i in range(8):
         for j in range(8):
-            #chessSquares.append(img.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
+            #chessSquares.append(img2.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
             chessSquares.append(img[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1], :])
+            #chessSquares.append(img[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1]])
            
 
     def custom_loss(y_true, y_pred):
@@ -48,8 +53,8 @@ def main():
     data_sample = np.zeros((64, 224, 224, 3))
     for i, file_ in enumerate(chessSquares):
         #-- uncomment these two lines to see each square of the chess board--
-        #plt.imshow(file_)
-        #plt.show()
+        plt.imshow(file_)
+        plt.show()
         square = cv2.resize(file_, (224, 224))
             #square = file_.resize((224, 224))
         square = np.array(square, dtype=np.float32)
@@ -61,7 +66,7 @@ def main():
         #data_sample[i] = square
         #--messing with the below line vastly changes output--
         data_sample[i] = tf.keras.applications.vgg16.preprocess_input(square)
-    
+    #print(data_sample)
     predictions = np.argmax(new_model.predict(data_sample, batch_size=64), axis=-1)
     print(predictions)
     for p in predictions:
