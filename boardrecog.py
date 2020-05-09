@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from scipy.stats import mode
 import tensorflow as tf
 import stockfish as sf
+from PIL import Image
 
 
 def findintersect(vertical, horizontal, img):    
@@ -207,7 +208,7 @@ def findlines(board, showImage):
     edges = cv2.Canny(blur_gray, 60, 110)
     lines = cv2.HoughLines(edges, 1, np.pi/180, 135)
     lines = lines.reshape((lines.shape[0], lines.shape[2]))
-    print(lines.shape)
+    #print(lines.shape)
     
     vertical, horizontal = preProcessLines(lines, img)
 
@@ -256,13 +257,13 @@ def findlines(board, showImage):
         cv2.imshow('hough', img)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-    chessSquares = []
-    for i in range(8):
-        for j in range(8):
-            chessSquares.append(img[y_corners[i,j]:y_corners[i+1,j], x_corners[i,j]:x_corners[i,j+1]])
+    #chessSquares = []
+    #for i in range(8):
+    #    for j in range(8):
+    #        chessSquares.append(img[y_corners[i,j]:y_corners[i+1,j], x_corners[i,j]:x_corners[i,j+1]])
     #cv2.waitKey(1)
     #plt.imshow(img)
-    return np.asarray(chessSquares)
+    return (x_corners, y_corners)
 
 def main():
     path = input("image:\n")
@@ -275,32 +276,45 @@ def main():
     else:
         path = 'train/data/images/0004.jpg'
 
-
-    imgs = findlines(path, False)
-
-    #findlines('train/data/images/0002.jpg')
-    #findlines('train/data/images/0003.jpg')
-    #findlines('train/data/images/0004.jpg')
-
+    (x_corners, y_corners) = findlines(path, False)
+    print(x_corners)
+    print(y_corners)
+    img = Image.open(path)
+    chessSquares = []
+    #plt.imshow(img)
+    #plt.show()
+    for i in range(8):
+        for j in range(8):
+            chessSquares.append(img.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
+            #chessSquares.append(img[x_corners[i,j]:x_corners[i,j+1], y_corners[i,j]:y_corners[i+1,j]])
+           
     def custom_loss(y_true, y_pred):
         return tf.keras.backend.mean(tf.keras.backend.square(y_true - y_pred), axis=-1)
 
     new_model = tf.keras.models.load_model('train/my_model', compile=False)
     new_model.compile(loss=custom_loss, optimizer=tf.keras.optimizers.RMSprop())
-    #loss, acc = new_model.evaluate(test_data, , verbose=2)
-    
-    predictions = []
-    print(imgs[1].shape)
-    print(imgs[1])
+
     board = ""
     empties = 0
     rankCntr = 0
     cases = ["b", "k", "n", "p", "q", "r", "E", "B", "K", "N", "P", "Q", "R"]
-    for i in range(imgs.shape[0]):
-        s = np.resize(imgs[i], (224, 224))/255.0
-        square = tf.convert_to_tensor(np.stack((s,s,s), axis=-1), np.float32)
-        print(square.shape)
-        p = np.argmax(new_model.predict(square))[0]
+    data_sample = np.zeros((64, 224, 224, 3))
+    for i, file_ in enumerate(chessSquares):
+        plt.imshow(file_)
+        plt.show()
+        square = file_.resize((224, 224))
+        square = np.array(square, dtype=np.float32)
+        square /= 255.
+        if len(square.shape) == 2:
+                square = np.stack([square, square, square], axis=-1)
+        
+        #square = tf.Tensor(square, shape=(None,224,224,3), dtype=tf.float32)
+        #p = new_model.predict(square, batch_size=224)
+        data_sample[i] = square
+    print(data_sample.shape)
+    predictions = np.argmax(new_model.predict(data_sample, batch_size=64), axis=-1)
+    print(predictions)
+    for p in predictions:
         if cases[p] == "E":
             empties += 1
         else: 
@@ -317,12 +331,15 @@ def main():
             rankCntr = 0
 
     boardWhite = board + " w KQkq - 0 2"
+    print(boardWhite)
     boardBlack = board + " b KQkq - 0 2"
+    print(boardBlack)
     API = sf.Stockfish()
     API.set_fen_position(boardWhite)
     print("Best move for white: " + API.get_best_move())
     API.set_fen_position(boardBlack)
     print("\nBest move for black: " + API.get_best_move())
+    API.kill()
 
     #imgs = tf.convert_to_tensor(imgs, np.float32)
     #predictions = new_model.predict(imgs)
