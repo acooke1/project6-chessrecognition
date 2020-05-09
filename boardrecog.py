@@ -21,15 +21,7 @@ def main():
 
     (x_corners, y_corners) = findlines(path, False)
     img = Image.open(path)
-    #(m, n, k) = np.array(img, dtype=np.float32).shape
-    #print(m)
-    #print(n)
-    #x_corners = (x_corners * np.round(n/(m*512/n))) - 20
-    #y_corners = (y_corners * np.round(m/512)) + 45
-    #x_corners = x_corners.astype(int)
-    #y_corners = y_corners.astype(int)
-    #int(x_corners)
-    #rint(y_corners)
+    
     chessSquares = []
     #plt.imshow(img)
     #plt.show()
@@ -91,16 +83,13 @@ def main():
     print(boardWhite)
     boardBlack = board + " b KQkq - 0 2"
     print(boardBlack)
-    API = sf.Stockfish()
-    API.set_fen_position(boardWhite)
-    print("Best move for white: " + API.get_best_move())
-    API.set_fen_position(boardBlack)
-    print("\nBest move for black: " + API.get_best_move())
-    API.kill()
+    #API = sf.Stockfish()
+    #API.set_fen_position(boardWhite)
+    #print("Best move for white: " + API.get_best_move())
+    #API.set_fen_position(boardBlack)
+    #print("\nBest move for black: " + API.get_best_move())
+    #API.kill()
 
-    #imgs = tf.convert_to_tensor(imgs, np.float32)
-    #predictions = new_model.predict(imgs)
-    #print(predictions)
 
 
 
