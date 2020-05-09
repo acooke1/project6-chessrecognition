@@ -20,7 +20,11 @@ def main():
         path = 'train/data/images/0004.jpg'
 
     (x_corners, y_corners) = findlines(path, False)
-    img = Image.open(path)
+    img2 = Image.open(path)
+    print(img2)
+    img = cv2.imread(path)
+    print(img.shape)
+
     #(m, n, k) = np.array(img, dtype=np.float32).shape
     #print(m)
     #print(n)
@@ -35,9 +39,19 @@ def main():
     #plt.show()
     for i in range(8):
         for j in range(8):
-            chessSquares.append(img.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
-            #chessSquares.append(img[x_corners[i,j]:x_corners[i,j+1], y_corners[i,j]:y_corners[i+1,j]])
+            # cv2.imshow("a", np.array(img)[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1], :])
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+            #chessSquares.append(img.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
+            # plt.imshow(img2.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
+            # plt.show()
+            # cv2.imshow("a", img[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1], :])
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+            
+            chessSquares.append(img[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1], :])
            
+
     def custom_loss(y_true, y_pred):
         return tf.keras.backend.mean(tf.keras.backend.square(y_true - y_pred), axis=-1)
 

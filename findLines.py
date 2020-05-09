@@ -196,6 +196,7 @@ def preProcessLines(lines, img):
 
 def findlines(board, showImage=True): 
     img = cv2.imread(board, 0)
+    print(img.shape)
     original_img = img.copy()
 
     # Images that are too big yield far too many lines
@@ -234,8 +235,8 @@ def findlines(board, showImage=True):
     return (x_corners, y_corners)
 
 def main():
-    findlines('train/data/images/0001.jpg')
-    findlines('train/data/images/0002.jpg')
+    #findlines('train/data/images/0001.jpg')
+    #findlines('train/data/images/0002.jpg')
     findlines('train/data/images/0003.jpg')
     findlines('train/data/images/0004.jpg')
     findlines('train/data/images/0005.jpg')
