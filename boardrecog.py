@@ -226,8 +226,6 @@ def findlines(board, showImage):
             else:
                 color = (255,0,0)
             cv2.rectangle(img, start, end, color,2)
-    x_corners = x_corners.astype(int)
-    y_corners = y_corners.astype(int)
 
     # for line in lines:
     #     #for rho,theta in line:
@@ -277,9 +275,16 @@ def main():
         path = 'train/data/images/0004.jpg'
 
     (x_corners, y_corners) = findlines(path, False)
-    print(x_corners)
-    print(y_corners)
     img = Image.open(path)
+    #(m, n, k) = np.array(img, dtype=np.float32).shape
+    #print(m)
+    #print(n)
+    #x_corners = (x_corners * np.round(n/(m*512/n))) - 20
+    #y_corners = (y_corners * np.round(m/512)) + 45
+    #x_corners = x_corners.astype(int)
+    #y_corners = y_corners.astype(int)
+    #int(x_corners)
+    #rint(y_corners)
     chessSquares = []
     #plt.imshow(img)
     #plt.show()
@@ -300,8 +305,8 @@ def main():
     cases = ["b", "k", "n", "p", "q", "r", "E", "B", "K", "N", "P", "Q", "R"]
     data_sample = np.zeros((64, 224, 224, 3))
     for i, file_ in enumerate(chessSquares):
-        plt.imshow(file_)
-        plt.show()
+        #plt.imshow(file_)
+        #plt.show()
         square = file_.resize((224, 224))
         square = np.array(square, dtype=np.float32)
         square /= 255.
@@ -323,12 +328,14 @@ def main():
             else:
                 board += str(empties)
                 board += cases[p]
+                empties = 0
         rankCntr += 1
         if rankCntr == 8:
             if empties != 0:
                 board += str(empties)
             board += "/"
             rankCntr = 0
+            empties = 0
 
     boardWhite = board + " w KQkq - 0 2"
     print(boardWhite)
