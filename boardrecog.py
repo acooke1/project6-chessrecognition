@@ -44,24 +44,29 @@ def main():
     new_model = tf.keras.models.load_model('train/my_model', compile=False)
     new_model.compile(loss=custom_loss, optimizer=tf.keras.optimizers.RMSprop())
 
+
+
+
     board = ""
     empties = 0
     rankCntr = 0
     cases = ["b", "k", "n", "p", "q", "r", "E", "B", "K", "N", "P", "Q", "R"]
     data_sample = np.zeros((64, 224, 224, 3))
     for i, file_ in enumerate(chessSquares):
+        #-- uncomment these two lines to see each square of the chess board--
         #plt.imshow(file_)
         #plt.show()
         square = file_.resize((224, 224))
         square = np.array(square, dtype=np.float32)
-        square /= 255.
+        #--messing with this line vastly changes output--
+        #square /= 255.
         if len(square.shape) == 2:
                 square = np.stack([square, square, square], axis=-1)
         
-        #square = tf.Tensor(square, shape=(None,224,224,3), dtype=tf.float32)
-        #p = new_model.predict(square, batch_size=224)
         data_sample[i] = square
-    print(data_sample.shape)
+        #--messing with this line vastly changes output--
+        #data_sample[i] = tf.keras.applications.vgg16.preprocess_input(square)
+    
     predictions = np.argmax(new_model.predict(data_sample, batch_size=64), axis=-1)
     print(predictions)
     for p in predictions:
@@ -98,8 +103,6 @@ def main():
     #print(predictions)
 
 
-        
-    
 
 if __name__ == "__main__":
     main()
