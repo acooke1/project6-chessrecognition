@@ -25,30 +25,12 @@ def main():
     img = cv2.imread(path)
     print(img.shape)
 
-    #(m, n, k) = np.array(img, dtype=np.float32).shape
-    #print(m)
-    #print(n)
-    #x_corners = (x_corners * np.round(n/(m*512/n))) - 20
-    #y_corners = (y_corners * np.round(m/512)) + 45
-    #x_corners = x_corners.astype(int)
-    #y_corners = y_corners.astype(int)
-    #int(x_corners)
-    #rint(y_corners)
     chessSquares = []
     #plt.imshow(img)
     #plt.show()
     for i in range(8):
         for j in range(8):
-            # cv2.imshow("a", np.array(img)[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1], :])
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
             #chessSquares.append(img.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
-            # plt.imshow(img2.crop((x_corners[i,j], y_corners[i,j], x_corners[i+1,j+1], y_corners[i+1,j+1])))
-            # plt.show()
-            # cv2.imshow("a", img[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1], :])
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
-            
             chessSquares.append(img[y_corners[i,j]:y_corners[i+1,j+1], x_corners[i,j]:x_corners[i+1,j+1], :])
            
 
@@ -57,8 +39,6 @@ def main():
 
     new_model = tf.keras.models.load_model('train/my_model', compile=False)
     new_model.compile(loss=custom_loss, optimizer=tf.keras.optimizers.RMSprop())
-
-
 
 
     board = ""
@@ -70,7 +50,8 @@ def main():
         #-- uncomment these two lines to see each square of the chess board--
         #plt.imshow(file_)
         #plt.show()
-        square = file_.resize((224, 224))
+        square = cv2.resize(file_, (224, 224))
+            #square = file_.resize((224, 224))
         square = np.array(square, dtype=np.float32)
         #--messing with the below line vastly changes output--
         #square /= 255.
