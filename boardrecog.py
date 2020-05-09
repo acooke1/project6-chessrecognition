@@ -58,14 +58,14 @@ def main():
         #plt.show()
         square = file_.resize((224, 224))
         square = np.array(square, dtype=np.float32)
-        #--messing with this line vastly changes output--
+        #--messing with the below line vastly changes output--
         #square /= 255.
         if len(square.shape) == 2:
                 square = np.stack([square, square, square], axis=-1)
         
-        data_sample[i] = square
-        #--messing with this line vastly changes output--
-        #data_sample[i] = tf.keras.applications.vgg16.preprocess_input(square)
+        #data_sample[i] = square
+        #--messing with the below line vastly changes output--
+        data_sample[i] = tf.keras.applications.vgg16.preprocess_input(square)
     
     predictions = np.argmax(new_model.predict(data_sample, batch_size=64), axis=-1)
     print(predictions)
