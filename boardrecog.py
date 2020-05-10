@@ -53,8 +53,8 @@ def main():
     data_sample = np.zeros((64, 224, 224, 3))
     for i, file_ in enumerate(chessSquares):
         #-- uncomment these two lines to see each square of the chess board--
-        plt.imshow(file_)
-        plt.show()
+        #plt.imshow(file_)
+        #plt.show()
         square = cv2.resize(file_, (224, 224))
             #square = file_.resize((224, 224))
         square = np.array(square, dtype=np.float32)
@@ -68,7 +68,7 @@ def main():
         data_sample[i] = tf.keras.applications.vgg16.preprocess_input(square)
     #print(data_sample)
     predictions = np.argmax(new_model.predict(data_sample, batch_size=64), axis=-1)
-    print(predictions)
+    #print(predictions)
     for p in predictions:
         if cases[p] == "E":
             empties += 1
@@ -87,10 +87,9 @@ def main():
             rankCntr = 0
             empties = 0
 
-    boardWhite = board + " w KQkq - 0 2"
-    print(boardWhite)
-    boardBlack = board + " b KQkq - 0 2"
-    print(boardBlack)
+    board = board + " w KQkq - 0 2"
+    print("\nBoard in FEN representation:\n")
+    print(board)
     #API = sf.Stockfish()
     #API.set_fen_position(boardWhite)
     #print("Best move for white: " + API.get_best_move())
