@@ -16,19 +16,19 @@ def main():
         correctBoard = "RP4pr/NP4p1/BP1B1kpb/7q/K2Pp2k/1PQ3pb/NP3p1n/1P4pr/"
     elif path == 'image2':
         path = 'train/data/images/0002.jpg'
-        correctBoard = ""
+        correctBoard = "1P2N1p1/K1P2p2/RP1B2p1/7r/2B5/1PN1B1pr/5p1k/1P4p1"
     elif path == 'image3':
         path = 'train/data/images/0003.jpg'
-        correctBoard = ""
+        correctBoard = "7q/KP6/1Q3P2/3p4/p1p5/6p1/4Rpp1/r4rk1/"
     elif path == 'image4':
         path = 'train/data/images/0004.jpg'
-        correctBoard = ""
+        correctBoard = "rp4PR/np4PN/bp4PB/kp4PK/qp4PQ/bp4PB/np4PN/rp4PR"
     elif path == 'image7':
         path = 'train/data/images/0007.jpg'
-        correctBoard = ""
+        correctBoard = "RNBQKBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbqkbnr"
     else:
         path = 'train/data/images/0008.jpg'
-        correctBoard = "7q/KP6/1Q3P2/3p4/p1p5/6p1/4Rpp1/r4rk1/"
+        correctBoard = "R3KBNR/1P6P/1Q1P1P2/2PNP1P1/8/1p1p1nb1/p1p1bpp1/r2q1rk1"
 
     (x_corners, y_corners) = findlines(path, False)
     img = np.array(Image.open(path))
