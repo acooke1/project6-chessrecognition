@@ -31,10 +31,7 @@ def main():
         correctBoard = "7q/KP6/1Q3P2/3p4/p1p5/6p1/4Rpp1/r4rk1/"
 
     (x_corners, y_corners) = findlines(path, False)
-    #img2 = Image.open(path)
-    #print(img2)
-    img = cv2.imread(path)
-    #print(img.shape)
+    
 
     chessSquares = []
     #plt.imshow(img)
@@ -60,8 +57,8 @@ def main():
     data_sample = np.zeros((64, 224, 224, 3))
     for i, file_ in enumerate(chessSquares):
         #-- uncomment these two lines to see each square of the chess board--
-        #plt.imshow(file_)
-        #plt.show()
+        # plt.imshow(file_)
+        # plt.show()
         square = cv2.resize(file_, (224, 224))
             #square = file_.resize((224, 224))
         square = np.array(square, dtype=np.float32)
