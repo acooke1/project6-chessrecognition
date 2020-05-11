@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.stats import mode
 from sklearn.cluster import KMeans
+from PIL import Image
 
 def findintersect(vertical, horizontal):    
     x_corners = np.zeros((9,9), dtype=np.int)
@@ -199,7 +200,7 @@ def preProcessLines(lines, img):
     return vertical, horizontal
 
 def findlines(board, showImage=True): 
-    img = cv2.imread(board, 0)
+    img = np.array(Image.open(board).convert("L"))
     original_img = img.copy()
 
     # Images that are too big yield far too many lines
