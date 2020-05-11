@@ -185,9 +185,13 @@ def preProcessLines(lines, img):
     lines = lines[lines[:,1] < 3]
 
     kmeans = KMeans(2).fit(lines[:,1].reshape((-1,1)))
-    
-    vertical = lines[kmeans.labels_ == 0]
-    horizontal = lines[kmeans.labels_ == 1]
+
+    if kmeans.cluster_centers_[0] < kmeans.cluster_centers_[1]:
+        vertical = lines[kmeans.labels_ == 1]
+        horizontal = lines[kmeans.labels_ == 0]
+    else:
+        vertical = lines[kmeans.labels_ == 0]
+        horizontal = lines[kmeans.labels_ == 1]
     
     vertical = nineLines(vertical, img.shape[1])
     horizontal = nineLines(horizontal, img.shape[0])
