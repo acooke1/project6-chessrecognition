@@ -31,7 +31,7 @@ def main():
         correctBoard = "7q/KP6/1Q3P2/3p4/p1p5/6p1/4Rpp1/r4rk1/"
 
     (x_corners, y_corners) = findlines(path, False)
-    
+    img = np.array(Image.open(path))
 
     chessSquares = []
     #plt.imshow(img)
