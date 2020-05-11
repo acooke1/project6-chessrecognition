@@ -24,7 +24,7 @@ def main():
         path = 'train/data/images/0008.jpg'
 
     (x_corners, y_corners) = findlines(path, False)
-    
+    img = np.array(Image.open(path))
 
     chessSquares = []
     #plt.imshow(img)
