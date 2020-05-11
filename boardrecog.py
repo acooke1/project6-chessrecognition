@@ -87,7 +87,7 @@ def main():
             rankCntr = 0
             empties = 0
 
-    board = board + " w KQkq - 0 2"
+    #board = board + " w KQkq - 0 2"
     print("\nBoard in FEN representation:\n")
     print(board)
     #API = sf.Stockfish()
