@@ -10,18 +10,25 @@ from PIL import Image
 
 def main():
     path = input("image:\n")
+    correctBoard = ""
     if path == 'image1':
         path = 'train/data/images/0001.jpg'
+        correctBoard = "RP4pr/NP4p1/BP1B1kpb/7q/K2Pp2k/1PQ3pb/NP3p1n/1P4pr/"
     elif path == 'image2':
         path = 'train/data/images/0002.jpg'
+        correctBoard = ""
     elif path == 'image3':
         path = 'train/data/images/0003.jpg'
+        correctBoard = ""
     elif path == 'image4':
         path = 'train/data/images/0004.jpg'
+        correctBoard = ""
     elif path == 'image7':
         path = 'train/data/images/0007.jpg'
+        correctBoard = ""
     else:
         path = 'train/data/images/0008.jpg'
+        correctBoard = "7q/KP6/1Q3P2/3p4/p1p5/6p1/4Rpp1/r4rk1/"
 
     (x_corners, y_corners) = findlines(path, False)
     img = np.array(Image.open(path))
