@@ -44,7 +44,7 @@ def main():
 
     new_model = tf.keras.models.load_model('train/my_model', compile=False)
     new_model.compile(loss=custom_loss, optimizer=tf.keras.optimizers.RMSprop())
-
+    
 
     board = ""
     empties = 0
