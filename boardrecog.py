@@ -92,8 +92,10 @@ def main():
             empties = 0
 
     #board = board + " w KQkq - 0 2"
-    print("\nBoard in FEN representation:\n")
-    print(board)
+    print("Correct Board representation:\n")
+    print(correctBoard + "\n")
+    print("Our Board representation:\n")
+    print(board + "\n")
     #API = sf.Stockfish()
     #API.set_fen_position(boardWhite)
     #print("Best move for white: " + API.get_best_move())
